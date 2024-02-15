@@ -1,15 +1,15 @@
 '<script>
-import CompositionApi from './components/CompositionApi.vue';
-
+import Profile from './components/Profile.vue';
 export default {
   components: {
-    CompositionApi
-  }
+    CompositionApi,
+    Profile
+}
 }
 </script>
 
 <template>
-  <CompositionApi />
+  <Profile />
 </template>
 
 <style>
