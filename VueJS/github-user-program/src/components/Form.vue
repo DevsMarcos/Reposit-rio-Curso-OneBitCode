@@ -12,7 +12,10 @@ function handleSubmit(ev) {
 
 <template>
   <form @submit="handleSubmit">
-    <input type="text" v-model="searchInput" @input="$emit('update:modelValue', $event.target.value)">
+    <input 
+    type="text" 
+    v-model="searchInput" 
+    @input="$emit('update:modelValue', $event.target.value)">
     <button type="submit">Carregar Usuário</button>
   </form>
 </template>

@@ -5,7 +5,7 @@ import UserInfo from './UserInfo.vue';
 import Reepository from './Repository.vue'
 import Form from './Form.vue';
 
-const searchInput = ref('')
+const username = ref('')
 
 const state = reactive({
   login: '',
