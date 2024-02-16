@@ -1,17 +1,21 @@
 <script setup>
-import { reactive } from 'vue';
+import { reactive, ref, computed, onMounted, onUpdated, onUnmounted } from 'vue';
+
+const searchInput = ref('')
 
 const state = reactive({
-  login: 'johndoe',
-  name: 'John Doe',
-  bio: '...',
-  company: 'Acme Inc.',
-  avatar_url: 'https://unsplash.it/256',
-  searchInput: ''
+  login: '',
+  name: '',
+  bio: '',
+  company: '',
+  avatar_url: '',
+  repos:  [],
 })
 
-async function fetchGithubUser() {
-  const res = await fetch(`https://api.github.com/users/${state.searchInput}`)
+async function fetchGithubUser(ev) {
+  ev.preventDefault()
+
+  const res = await fetch(`https://api.github.com/users/${searchInput.value}`)
   const { login, name, bio, company, avatar_url } = await res.json()
 
   state.login = login
@@ -19,18 +23,60 @@ async function fetchGithubUser() {
   state.bio = bio
   state.company = company
   state.avatar_url = avatar_url
+  state.repos = []
+
+	fetchUserRepositories()
 }
+
+async function fetchUserRepositories() {
+  const res = await fetch(`https://api.github.com/users/${state.login}/repos`)
+  const repos = await res.json()
+  state.repos = repos
+}
+
+const reposCountMethod = computed(() => {
+  return state.repos.length > 0 
+  ? `${state.name} possui ${state.repos.length} repositórios`
+  : `${state.name} não possui respositórios públicos`
+})
+
+onMounted(() => {
+  console.log("O componente foi montado.")
+})
+
+onUpdated(() => {
+  console.log("O componente foi atualizado")
+})
+
+onUnmounted(() => {
+  console.log("O componente foi desmontado")
+})
 </script>
 
 <template>
-	<h1>GitHub User Data</h1>
-  <input type="text" v-model="state.searchInput">
-  <button v-on:click="fetchGithubUser">Carregar Usuário</button>
-  <img v-bind:src="state.avatar_url">
-  <strong>@{{ state.login }}</strong>
-  <h2>{{ state.name }}</h2>
-  <h3>{{ state.company }}</h3>
-  <span>{{ state.bio }}</span>
+  <h1>GitHub User Data</h1>
+  <p>Pesquinsado por: <strong>https://api.github.com/user/{{ searchInput }}</strong></p>
+  <form @submit="fetchGithubUser">
+    <input type="text" v-model.lazy="searchInput">
+    <button >Carregar Usuário</button>
+  </form>
+  <div v-if="state.login">
+    <img v-bind:src="state.avatar_url">
+    <strong>@{{ state.login }}</strong>
+    <h2>{{ state.name }}</h2>
+    <h3>{{ state.company }}</h3>
+    <span>{{ state.bio }}</span>
+
+
+    <section v-if="state.repos.length > 0">
+      <h2>{{ reposCountMethod }}</h2>
+      <article v-for="repo of state.repos">
+        <h3>{{ repo.full_name }}</h3>
+        <p>{{ repo.description }}</p>
+        <a :href="repo.html_url" target="_blank">Ver no GitHub</a>
+      </article>
+    </section>
+  </div>
 </template>
 
 <style scoped>
