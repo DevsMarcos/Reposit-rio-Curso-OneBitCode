@@ -1,20 +1,10 @@
-'<script setup>
-import Profile from './components/Profile.vue';
-import { ref } from 'vue';
-
-
-const isOpen = ref(true)
+<script setup>
 </script>
 
 <template>
-  <input type="checkbox" v-model="isOpen"/> {{ isOpen }}
-  <Profile v-if="isOpen"> 
-    <h1>GitHub User Data</h1>
-
-    <template v-slot:footer>
-      Desenvolvido por <a href="https://github.com/DevsMarcos" target="_blank">Marcos Macêdo</a>
-    </template>
-  </Profile>
+    <RouterLink to="/">Home</RouterLink>
+    <RouterLink to="/search">Search User</RouterLink>
+  <RouterView></RouterView>
 </template>
 
 <style>
@@ -36,7 +26,31 @@ body {
   margin: 0 auto;
   text-align: center;
 }
+h1 {
+  color: #f64348;
+  margin: 1rem auto;
+}
+footer {
+  height: 3rem;
+  margin-top: 2rem;
+  padding: 1rem 0;
+}
 a {
   color: #f64348;
+  font-weight: 600;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+a + a {
+  margin-left: 1rem;
+}
+a:hover {
+  cursor: pointer;
+  filter: brightness(0.9);
+}
+nav {
+  border-bottom: 1px solid #fff;
+  padding: 1rem 0;
+  margin-bottom: 1rem;
 }
 </style>
