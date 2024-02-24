@@ -1,0 +1,15 @@
+/*const spaceship = {
+    name: "X-Wing",
+    speed: 0
+}
+
+function accelerate (spaceship: { name: string; speed: number }, speed: number){
+    spaceship.speed = speed
+}
+
+accelerate(spaceship, 60)
+
+Aqui a ideia ja conseguiuinferir os tipos do objeto spaceship, e assim utilizamos do autocompletar 
+para informar o valor da variável em questão
+
+*/
